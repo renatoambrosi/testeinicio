@@ -55,10 +55,6 @@
       margin-bottom: 1.5rem;
     }
 
-    @media (max-width: 758px) {
-      h2 { font-size: 1.25rem; }
-    }
-
     .text-block {
       line-height: 1.5;
       min-height: 35px;
@@ -74,18 +70,24 @@
       padding: 1.25rem 0 0.625rem;
     }
 
-    @media (max-width: 758px) {
-      h3.section-title { font-size: 1.125rem; }
-    }
-
-    .video-thumb {
-      display: block;
+    /* ESTILO DO PLAYER DE VÍDEO */
+    .video-wrapper {
+      position: relative;
+      padding-bottom: 56.25%; /* Proporção 16:9 */
+      height: 0;
+      overflow: hidden;
       margin-bottom: 1.5rem;
-      cursor: pointer;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
-    .video-thumb img {
-      max-width: 100%;
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
       border-radius: 8px;
     }
 
@@ -111,10 +113,6 @@
       margin-bottom: 10px;
     }
 
-    @media (max-width: 758px) {
-      .input-wrap { min-width: 100%; max-width: 100%; }
-    }
-
     input {
       width: 100%;
       height: 36px;
@@ -125,14 +123,7 @@
       outline: none;
       background-color: rgba(255,255,255,0.5);
       color: #504b3a;
-      font-family: 'Inter', sans-serif;
       font-size: 16px;
-    }
-
-    input::placeholder { color: #c4c2bc; }
-
-    input:focus {
-      box-shadow: rgba(58,145,224,0.36) 0px 0px 0px 4px, rgb(188,172,90) 0px 0px 0px 1px;
     }
 
     .error-msg {
@@ -144,53 +135,31 @@
 
     .error-msg.visible { display: block; }
 
-    .submit-row {
-      display: flex;
-      justify-content: space-between;
-      margin: 10px 0;
-    }
-
     button[type="submit"] {
-      position: relative;
       cursor: pointer;
       height: 36px;
       font-size: 15px;
       border-radius: 8px;
-      padding: 0 0.9em;
+      padding: 0 1.5em;
       background: #9b8732;
       color: #FFFFFF;
       border: 0;
-      outline: none;
-      font-family: 'Inter', sans-serif;
       font-weight: 600;
       display: inline-flex;
       align-items: center;
       gap: 0.5em;
-      transition: background 100ms ease-in-out;
+      margin-top: 10px;
     }
 
-    button[type="submit"]:hover { background: rgba(155,135,50,0.75); }
-
-    button[type="submit"]:disabled { opacity: 0.7; cursor: not-allowed; }
-
-    .arrow-icon {
-      width: 16px;
-      height: 16px;
-    }
+    .arrow-icon { width: 16px; height: 16px; }
   </style>
 </head>
 <body>
 
-  <img
-    class="cover"
-    src="https://storage.tally.so/e84e74c5-41ba-4244-8cc3-f5e8f7cfc5f3/Teste-Prosperidade-Header-copiar.jpg"
-    alt="Teste de Prosperidade"
-  />
+  <img class="cover" src="https://storage.tally.so/e84e74c5-41ba-4244-8cc3-f5e8f7cfc5f3/Teste-Prosperidade-Header-copiar.jpg" alt="Teste de Prosperidade" />
 
   <div class="container">
-
     <h1>Teste de Prosperidade</h1>
-
     <h2>Surpreenda-se e descubra a energia que está bloqueando sua vida abundante</h2>
 
     <div class="text-block">
@@ -199,12 +168,16 @@
 
     <h3 class="section-title">Assista esse vídeo de instruções antes de começar:</h3>
 
-    <a class="video-thumb" href="https://youtu.be/WL6I5PK7Ygo" target="_blank" rel="noopener noreferrer">
-      <img src="https://storage.tally.so/9bd3f5c9-80da-4271-9223-3113b66ba603/IMG_4343.jpeg" alt="Vídeo de instruções"/>
-    </a>
+    <div class="video-wrapper">
+      <iframe 
+        src="https://www.youtube.com/embed/WL6I5PK7Ygo" 
+        title="Vídeo de instruções" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+      </iframe>
+    </div>
 
     <form id="form">
-
       <div class="field-label">Qual o seu nome?</div>
       <div class="input-wrap">
         <input type="text" id="nome" placeholder="" autocomplete="name" required/>
@@ -212,11 +185,11 @@
       <div class="error-msg" id="erro-nome">Por favor insira seu nome</div>
 
       <div class="field-label">Qual o seu número de telefone? (Whatsapp)</div>
-      <div class="field-hint">Seu resultado será enviado por Whstsapp</div>
+      <div class="field-hint">Seu resultado será enviado por Whatsapp</div>
       <div class="input-wrap">
         <input type="tel" id="telefone" placeholder="(11) 9 5555-5555" autocomplete="tel" required inputmode="numeric" maxlength="16"/>
       </div>
-      <div class="error-msg" id="erro-telefone">Por favor insira um número válido com DDD (mínimo 10 dígitos)</div>
+      <div class="error-msg" id="erro-telefone">Por favor insira um número válido com DDD</div>
 
       <div class="submit-row">
         <button type="submit" id="btn">
@@ -226,13 +199,11 @@
           </svg>
         </button>
       </div>
-
     </form>
-
   </div>
 
   <script>
-    // Máscara de telefone celular brasileiro (XX) 9 XXXX-XXXX
+    // Máscara de telefone
     document.getElementById('telefone').addEventListener('input', function(e) {
       let v = e.target.value.replace(/\D/g, '');
       if (v.length > 11) v = v.slice(0, 11);
@@ -245,7 +216,6 @@
       e.target.value = f;
     });
 
-    // Pega UTMs da URL atual
     function getUTMs() {
       const params = new URLSearchParams(window.location.search);
       return {
@@ -255,44 +225,21 @@
       };
     }
 
-    // Formata telefone removendo tudo que não é número e trata zero inicial
     function formatarTelefone(valor) {
       let numero = valor.replace(/\D/g, '');
-      if (numero.startsWith('0')) {
-        numero = numero.slice(1);
-      }
+      if (numero.startsWith('0')) numero = numero.slice(1);
       return numero;
-    }
-
-    // Valida: mínimo 10 dígitos após formatação
-    function validarTelefone(numero) {
-      return numero.length >= 10;
     }
 
     document.getElementById('form').addEventListener('submit', function(e) {
       e.preventDefault();
-
       const nome = document.getElementById('nome').value.trim();
-      const telefoneRaw = document.getElementById('telefone').value;
-      const telefone = formatarTelefone(telefoneRaw);
+      const telefone = formatarTelefone(document.getElementById('telefone').value);
 
-      let valido = true;
-
-      if (!nome) {
-        document.getElementById('erro-nome').classList.add('visible');
-        valido = false;
-      } else {
-        document.getElementById('erro-nome').classList.remove('visible');
+      if (!nome || telefone.length < 10) {
+        alert('Por favor, preencha os dados corretamente.');
+        return;
       }
-
-      if (!validarTelefone(telefone)) {
-        document.getElementById('erro-telefone').classList.add('visible');
-        valido = false;
-      } else {
-        document.getElementById('erro-telefone').classList.remove('visible');
-      }
-
-      if (!valido) return;
 
       const utms = getUTMs();
       const btn = document.getElementById('btn');
@@ -310,6 +257,5 @@
       window.location.href = `https://tally.so/r/ODzjWY?${params.toString()}`;
     });
   </script>
-
 </body>
 </html>
