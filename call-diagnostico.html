@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
+  <title>Sessão de Diagnóstico – Suellen Seragi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *:before, *:after { box-sizing: border-box; padding: 0; margin: 0; }
+    html, body { height: 100%; width: 100%; }
+    body {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      color: #504b3a;
+      background: #ffffff;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .cover {
+      display: block;
+      width: 100%;
+      height: 25vh;
+      object-fit: cover;
+      object-position: center 50%;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 50px 25px 80px;
+    }
+    @media (max-width: 758px) {
+      .container { max-width: 100%; padding: 40px 25px 60px; }
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      line-height: 1.2;
+      padding-bottom: 1.25rem;
+      color: #9b8732;
+    }
+    @media (max-width: 758px) { h1 { font-size: 2rem; } }
+
+    h2 {
+      font-size: 1.35rem;
+      font-weight: 400;
+      line-height: 1.35;
+      margin-bottom: 2rem;
+      color: #504b3a;
+    }
+
+    .text-block {
+      line-height: 1.65;
+      margin-bottom: 1rem;
+      color: #504b3a;
+    }
+
+    /* ── CALENDÁRIO DINÂMICO ── */
+    .date-card {
+      background: linear-gradient(135deg, #fdf8e8 0%, #f5edd0 100%);
+      border: 2px solid #bcac5a;
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin: 2rem 0;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    @media (max-width: 500px) {
+      .date-card { flex-direction: column; align-items: flex-start; gap: 12px; padding: 20px; }
+    }
+
+    .cal-icon {
+      flex-shrink: 0;
+      width: 56px;
+      height: 56px;
+      border-radius: 10px;
+      background: #9b8732;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(155,135,50,0.3);
+    }
+    .cal-top {
+      background: #b8340a;
+      height: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.5rem;
+      font-weight: 800;
+      color: white;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .cal-body {
+      flex: 1;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #504b3a;
+    }
+
+    .date-info {}
+    .date-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #9b8732;
+      margin-bottom: 4px;
+    }
+    .date-value {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #504b3a;
+      line-height: 1.2;
+    }
+    .date-sub {
+      font-size: 0.88rem;
+      color: #7a7464;
+      margin-top: 4px;
+    }
+
+    .sep {
+      border: none;
+      border-top: 1px solid #e8e2cc;
+      margin: 2.5rem 0;
+    }
+
+    h3.section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding-bottom: 0.75rem;
+      color: #504b3a;
+    }
+
+    .video-wrapper {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      margin-bottom: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: 0; border-radius: 12px;
+    }
+
+    /* ── FORMULÁRIO DE CONFIRMAÇÃO ── */
+    .confirm-form {
+      background: #fafaf7;
+      border: 1px solid #e0d9bc;
+      border-radius: 16px;
+      padding: 28px;
+      margin-top: 2rem;
+    }
+    .confirm-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #504b3a;
+    }
+    .confirm-subtitle {
+      font-size: 0.88rem;
+      color: #7a7464;
+      margin-bottom: 22px;
+      line-height: 1.5;
+    }
+
+    .field-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #9b8732;
+      margin-bottom: 5px;
+      display: block;
+    }
+    .field-wrap {
+      margin-bottom: 16px;
+    }
+    input.field-input {
+      width: 100%;
+      height: 40px;
+      padding: 0 12px;
+      box-shadow: rgba(0,0,0,0.08) 0px 1px 1px 0px, rgb(188,172,90) 0px 0px 0px 1px;
+      border: 0;
+      border-radius: 8px;
+      outline: none;
+      background: white;
+      color: #504b3a;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+    }
+    input.field-input:focus {
+      box-shadow: rgba(155,135,50,0.25) 0px 0px 0px 4px, rgb(188,172,90) 0px 0px 0px 1px;
+    }
+
+    .data-display {
+      height: 40px;
+      display: flex;
+      align-items: center;
+      font-size: 15px;
+      font-weight: 600;
+      color: #504b3a;
+      padding: 0 4px;
+    }
+
+    .btn-confirmar {
+      cursor: pointer;
+      width: 100%;
+      height: 44px;
+      font-size: 15px;
+      border-radius: 10px;
+      background: #9b8732;
+      color: #fff;
+      border: 0;
+      font-weight: 700;
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 6px;
+      transition: background 120ms ease;
+    }
+    .btn-confirmar:hover { background: rgba(155,135,50,0.82); }
+    .btn-confirmar:disabled { opacity: 0.65; cursor: not-allowed; }
+
+    /* ── ESTADO CONFIRMADO ── */
+    .confirmed-box {
+      display: none;
+      background: #f0faf0;
+      border: 2px solid #81c784;
+      border-radius: 16px;
+      padding: 28px;
+      margin-top: 2rem;
+      text-align: center;
+    }
+    .confirmed-box.visible { display: block; }
+    .confirmed-icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .confirmed-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #2e7d32;
+      margin-bottom: 8px;
+    }
+    .confirmed-text {
+      font-size: 0.95rem;
+      color: #388e3c;
+      line-height: 1.6;
+    }
+
+    .error-inline {
+      color: #B20110;
+      font-size: 0.82rem;
+      margin-top: 4px;
+      display: none;
+    }
+    .error-inline.visible { display: block; }
+
+    .footer-note {
+      margin-top: 2.5rem;
+      font-size: 0.85rem;
+      color: #9a9480;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+  <img class="cover" src="https://storage.tally.so/e84e74c5-41ba-4244-8cc3-f5e8f7cfc5f3/Teste-Prosperidade-Header-copiar.jpg" alt="Suellen Seragi" />
+
+  <div class="container">
+    <h1>Sessão de Diagnóstico do Teste de Prosperidade</h1>
+    <h2>Vamos aprofundar juntos o que o seu teste revelou sobre você</h2>
+
+    <p class="text-block">
+      Você deu um passo incrível ao conhecer os padrões que estão impactando sua prosperidade. Agora é hora de ir além: na <strong>Sessão de Diagnóstico</strong>, a Suellen vai aprofundar ao vivo o que o teste revelou e mostrar os próximos passos para você destravar sua vida abundante.
+    </p>
+    <p class="text-block">
+      A sessão é <strong>gratuita</strong>, realizada em grupo e completamente focada nas transformações que o Teste de Prosperidade apontou. Prepare-se para sair com clareza e direção.
+    </p>
+
+    <!-- DATA DINÂMICA -->
+    <div class="date-card">
+      <div class="cal-icon">
+        <div class="cal-top" id="calMes">—</div>
+        <div class="cal-body" id="calDia">—</div>
+      </div>
+      <div class="date-info">
+        <div class="date-label">Próxima sessão disponível</div>
+        <div class="date-value" id="dataExibida">Carregando...</div>
+        <div class="date-sub">Sábado às 14h • Online • Gratuito</div>
+      </div>
+    </div>
+
+    <hr class="sep"/>
+
+    <h3 class="section-title">Como funciona a sessão:</h3>
+    <p class="text-block" style="margin-bottom:1.25rem;">Assista ao vídeo abaixo para entender o que vai acontecer e como se preparar:</p>
+
+    <div class="video-wrapper">
+      <iframe
+        src="https://www.youtube.com/embed/WL6I5PK7Ygo"
+        title="Sessão de Diagnóstico – Como funciona"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+
+    <hr class="sep"/>
+
+    <!-- FORMULÁRIO DE CONFIRMAÇÃO -->
+    <div class="confirm-form" id="formBox">
+      <div class="confirm-title">Confirme sua presença</div>
+      <div class="confirm-subtitle">Seus dados foram preenchidos automaticamente. Corrija se necessário.</div>
+
+      <div class="field-wrap">
+        <label class="field-label" for="inputNome">Seu nome</label>
+        <input class="field-input" type="text" id="inputNome" placeholder="Seu nome completo" autocomplete="off"/>
+        <div class="error-inline" id="erroNome">Por favor insira seu nome</div>
+      </div>
+
+      <div class="field-wrap">
+        <label class="field-label" for="inputTel">WhatsApp</label>
+        <input class="field-input" type="tel" id="inputTel" placeholder="(11) 9 5555-5555" autocomplete="off" inputmode="numeric" maxlength="16"/>
+        <div class="error-inline" id="erroTel">Digite um número válido com DDD</div>
+      </div>
+
+      <div class="field-wrap">
+        <label class="field-label">Data da sessão</label>
+        <div class="data-display" id="dataDisplay">—</div>
+      </div>
+
+      <button class="btn-confirmar" id="btnConfirmar" type="button">
+        ✅ Confirmar minha presença
+      </button>
+    </div>
+
+    <!-- ESTADO CONFIRMADO -->
+    <div class="confirmed-box" id="confirmedBox">
+      <div class="confirmed-icon">🎉</div>
+      <div class="confirmed-title">Presença confirmada!</div>
+      <div class="confirmed-text" id="confirmedText">
+        Você receberá o link da sessão pelo WhatsApp na véspera.<br/>Até sábado! 🌟
+      </div>
+    </div>
+
+    <p class="footer-note">
+      Caso precise alterar algo, entre em contato com a Suellen pelo WhatsApp.
+    </p>
+  </div>
+
+  <script>
+    // ── Próximo sábado a partir de amanhã ──
+    function proximoSabado() {
+      const hoje = new Date();
+      const amanha = new Date(hoje);
+      amanha.setDate(hoje.getDate() + 1);
+      amanha.setHours(0, 0, 0, 0);
+      const dias = (6 - amanha.getDay() + 7) % 7;
+      const sabado = new Date(amanha);
+      sabado.setDate(amanha.getDate() + dias);
+      return sabado;
+    }
+
+    const MESES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+    const MESES_CURTOS = ['JAN','FEV','MAR','ABR','MAI','JUN','JUL','AGO','SET','OUT','NOV','DEZ'];
+
+    function formatarData(data) {
+      return `Sábado, ${data.getDate()} de ${MESES[data.getMonth()]}`;
+    }
+
+    const sabado = proximoSabado();
+
+    // Calendário visual
+    document.getElementById('calMes').textContent = MESES_CURTOS[sabado.getMonth()];
+    document.getElementById('calDia').textContent = sabado.getDate();
+
+    const dataFormatada = formatarData(sabado);
+    document.getElementById('dataExibida').textContent = dataFormatada + ' às 14h';
+    document.getElementById('dataDisplay').textContent = dataFormatada + ' às 14h';
+
+    // ── Parâmetros da URL ──
+    function getParam(k) {
+      return new URLSearchParams(window.location.search).get(k) || '';
+    }
+
+    const nomeParam = getParam('name') || getParam('nome');
+    const refParam  = getParam('ref')  || getParam('telefone');
+
+    if (nomeParam) document.getElementById('inputNome').value = nomeParam;
+
+    // Formata telefone para exibição
+    function formatarTelDisplay(n) {
+      const d = n.replace(/\D/g, '');
+      if (d.length === 11) return `(${d.slice(0,2)}) ${d.slice(2,3)} ${d.slice(3,7)}-${d.slice(7)}`;
+      if (d.length === 10) return `(${d.slice(0,2)}) ${d.slice(2,6)}-${d.slice(6)}`;
+      return d;
+    }
+    if (refParam) document.getElementById('inputTel').value = formatarTelDisplay(refParam);
+
+    // Máscara telefone
+    document.getElementById('inputTel').addEventListener('input', function(e) {
+      let v = e.target.value.replace(/\D/g, '');
+      if (v.length > 11) v = v.slice(0, 11);
+      let f = '';
+      if (v.length === 0) f = '';
+      else if (v.length <= 2) f = `(${v}`;
+      else if (v.length <= 3) f = `(${v.slice(0,2)}) ${v.slice(2)}`;
+      else if (v.length <= 7) f = `(${v.slice(0,2)}) ${v.slice(2,3)} ${v.slice(3)}`;
+      else f = `(${v.slice(0,2)}) ${v.slice(2,3)} ${v.slice(3,7)}-${v.slice(7)}`;
+      e.target.value = f;
+    });
+
+    // ── Botão confirmar ──
+    document.getElementById('btnConfirmar').addEventListener('click', async function() {
+      const nome     = document.getElementById('inputNome').value.trim();
+      const telRaw   = document.getElementById('inputTel').value.replace(/\D/g, '');
+      let valido = true;
+
+      if (!nome) {
+        document.getElementById('erroNome').classList.add('visible');
+        valido = false;
+      } else {
+        document.getElementById('erroNome').classList.remove('visible');
+      }
+
+      if (telRaw.length !== 11) {
+        document.getElementById('erroTel').classList.add('visible');
+        valido = false;
+      } else {
+        document.getElementById('erroTel').classList.remove('visible');
+      }
+
+      if (!valido) return;
+
+      const btn = document.getElementById('btnConfirmar');
+      btn.disabled = true;
+      btn.textContent = 'Confirmando...';
+
+      try {
+        const resp = await fetch('https://quizback-production-b442.up.railway.app/api/agendar-sessao', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nome, telefone: telRaw })
+        });
+
+        if (resp.ok) {
+          document.getElementById('formBox').style.display = 'none';
+          const box = document.getElementById('confirmedBox');
+          box.classList.add('visible');
+          document.getElementById('confirmedText').innerHTML =
+            `<strong>${nome}</strong>, sua vaga está reservada para<br/><strong>${dataFormatada} às 14h</strong>.<br/><br/>Você receberá o link da sessão pelo WhatsApp na véspera. Até lá! 🌟`;
+        } else {
+          btn.disabled = false;
+          btn.textContent = '✅ Confirmar minha presença';
+          alert('Houve um erro ao confirmar. Tente novamente.');
+        }
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = '✅ Confirmar minha presença';
+        alert('Erro de conexão. Verifique sua internet e tente novamente.');
+      }
+    });
+  </script>
+</body>
+</html>
